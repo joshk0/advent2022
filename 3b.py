@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import functools
 import sys
 
 def priority(c):
@@ -10,14 +11,9 @@ def priority(c):
     else:
         raise RuntimeError(c)
 
-def process(lines):
-    sets = [set(c for c in line) for line in lines]
-    intersect = sets[0]
-    for s in sets[1:]:
-        intersect = intersect & s
-    return priority([c for c in intersect][0])
+def process(sets):
+    return priority([c for c in functools.reduce(lambda a, b: a & b, sets)][0])
 
-lines = [line.rstrip() for line in sys.stdin]
-chunk_size = 3
-chunked_lines = [lines[i:i+chunk_size] for i in range(0, len(lines), chunk_size)]
-print(sum([process(line_chunk) for line_chunk in chunked_lines]))
+sets = [set([c for c in line.rstrip()]) for line in sys.stdin]
+chunked_sets = [sets[i:i+3] for i in range(0, len(sets), 3)]
+print(sum([process(set_chunk) for set_chunk in chunked_sets]))
