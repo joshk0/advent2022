@@ -3,10 +3,6 @@
 import sys
 
 grid = [[int(x) for x in line.rstrip()] for line in sys.stdin]
-visibilities = {}
-
-def is_edge(y, x):
-    return y == 0 or y == len(grid) - 1 or x == 0 or x == len(grid[0]) - 1
 
 def viewing_distance(seq, max_val):
     for i, item in enumerate(seq):
